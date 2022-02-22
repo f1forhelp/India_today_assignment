@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:india_today_demo/utils/constants/KAsset.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: Center(
+        child: Image.asset(KAsset.talk),
+      ),
+    );
   }
 }
