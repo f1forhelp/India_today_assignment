@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:india_today_demo/utils/constants/KAsset.dart';
 
 void main() {
@@ -10,8 +11,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeScreen(),
+    return ScreenUtilInit(
+      builder: () => GestureDetector(
+        onTap: () {
+          var currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          }
+        },
+        child: const MaterialApp(
+          home: HomeScreen(),
+        ),
+      ),
     );
   }
 }
