@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:india_today_demo/utils/constants/KAsset.dart';
 
 void main() {
@@ -20,7 +21,13 @@ class MyApp extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           }
         },
-        child: const MaterialApp(
+        child: MaterialApp(
+          theme: ThemeData(
+            textTheme: GoogleFonts.robotoTextTheme(
+              Theme.of(context)
+                  .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+            ),
+          ),
           home: HomeScreen(),
         ),
       ),
@@ -35,7 +42,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset(KAsset.talk),
+        child: Text(
+          "This is cat",
+          style: TextStyle(
+            fontSize: 40,
+          ),
+        ),
       ),
     );
   }
