@@ -4,9 +4,9 @@ import 'package:india_today_demo/utils/network/api_result.dart';
 import 'package:india_today_demo/utils/network/network_utils.dart';
 
 class AskQuestionRepositoryImpl {
-  final NetworkUtil _networkUtil = NetworkUtil(baseUrl: KUrl.baseUrl);
+  static final NetworkUtil _networkUtil = NetworkUtil(baseUrl: KUrl.baseUrl);
 
-  Future<ApiResult<GetAllQuestionResponse>> getAllQuestion() async {
+  static Future<ApiResult<GetAllQuestionResponse>> getAllQuestion() async {
     try {
       var res =
           await _networkUtil.get<GetAllQuestionResponse>(KUrl.getAllQuestion);

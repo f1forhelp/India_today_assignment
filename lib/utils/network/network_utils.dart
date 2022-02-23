@@ -160,11 +160,11 @@ class _DioClinet {
   final List<Interceptor> interceptors;
 
   _DioClinet(this.baseUrl, {Dio? dio, this.interceptors = const []}) {
-    _dio = dio ?? _dio;
+    _dio = dio ?? Dio();
     _dio
       ..options.baseUrl = baseUrl
-      ..options.connectTimeout = 222
-      ..options.receiveTimeout = 222
+      ..options.connectTimeout = 999999999
+      ..options.receiveTimeout = 999999999
       ..httpClientAdapter
       ..options.headers = {'Content-Type': 'application/json; charset=UTF-8'};
 

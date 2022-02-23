@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:india_today_demo/presentation/bloc/ask_question/askquestion_bloc.dart';
+import 'package:india_today_demo/utils/app_init.dart';
 import 'package:india_today_demo/utils/constants/k_color.dart';
 import 'package:india_today_demo/utils/constants/k_text_style.dart';
 import 'package:india_today_demo/utils/helper/ui_helper.dart';
@@ -12,100 +15,118 @@ class AskQuestionScreen extends StatefulWidget {
 }
 
 class _AskQuestionScreenState extends State<AskQuestionScreen> {
+  late AskquestionBloc askquestionBloc;
+
+  @override
+  void initState() {
+    askquestionBloc = AskquestionBloc();
+    askquestionBloc.getAllQuestions();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 8.h),
-              decoration: const BoxDecoration(
-                color: KColor.primayBlue,
-              ),
-              child: UiHelper.horizontalPadding(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Wallet Balance: ₹ 0",
-                      style: KTextStyle.mainHeadingDark.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(4.w),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black87,
-                          width: 1,
+    return BlocProvider(
+      create: (context) => AppInit.getIt<AskquestionBloc>(),
+      child: BlocListener<AskquestionBloc, AskquestionState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                // ignore: avoid_unnecessary_containers
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  decoration: const BoxDecoration(
+                    color: KColor.primayBlue,
+                  ),
+                  child: UiHelper.horizontalPadding(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Wallet Balance: ₹ 0",
+                          style: KTextStyle.mainHeadingDark.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                      child: Text(
-                        "Add Money",
-                        style: TextStyle(
-                          color: KColor.primayBlue,
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w800,
+                        Container(
+                          padding: EdgeInsets.all(4.w),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black87,
+                              width: 1,
+                            ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: Text(
+                            "Add Money",
+                            style: TextStyle(
+                              color: KColor.primayBlue,
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            UiHelper.horizontalPadding(
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Ask a Question",
-                        style: KTextStyle.mainHeadingDark),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Seek accurate answer i mmimijn nun b bhb ybuy guy gitf itf iytfyit fiyt fiytf iytf iytf itf iytf iytf iytf iytf iytf iytfv hl jb ho78t tf ; og utre rsu yli yyt rtd titu yyt fiy tff",
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
+                UiHelper.horizontalPadding(
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Ask a Question",
+                            style: KTextStyle.mainHeadingDark),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Seek accurate answer i mmimijn nun b bhb ybuy guy gitf itf iytfyit fiyt fiytf iytf iytf itf iytf iytf iytf iytf iytf iytfv hl jb ho78t tf ; og utre rsu yli yyt rtd titu yyt fiy tff",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Choose Category",
+                            style: KTextStyle.mainHeadingDark),
+                      ),
+                      CustomDropDownMenu(
+                        dropDownItemns: const ["Love", "Hate", "SomeThing"],
+                        getSelected: (vval) {
+                          print(vval);
+                        },
+                      ),
+                      CustomTextFormField(
+                        enableCounter: true,
+                        maxLength: 3,
+                        maxLines: 4,
+                        textEditingController: TextEditingController(),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Ideas what to Ask (Select Any)",
+                            style: KTextStyle.mainHeadingDark),
+                      ),
+                      Column(
+                        children: List.generate(
+                          4,
+                          (index) => _IdeasListItem(),
+                        ),
+                      ),
+                    ],
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Choose Category",
-                        style: KTextStyle.mainHeadingDark),
-                  ),
-                  CustomDropDownMenu(
-                    dropDownItemns: const ["Love", "Hate", "SomeThing"],
-                    getSelected: (vval) {
-                      print(vval);
-                    },
-                  ),
-                  CustomTextFormField(
-                    enableCounter: true,
-                    maxLength: 3,
-                    maxLines: 4,
-                    textEditingController: TextEditingController(),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Ideas what to Ask (Select Any)",
-                        style: KTextStyle.mainHeadingDark),
-                  ),
-                  Column(
-                    children: List.generate(
-                      4,
-                      (index) => _IdeasListItem(),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

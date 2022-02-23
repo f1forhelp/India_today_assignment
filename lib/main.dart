@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:india_today_demo/presentation/pages/ask_question_screen.dart';
+import 'package:india_today_demo/utils/app_init.dart';
 import 'package:india_today_demo/utils/constants/k_asset.dart';
 
 void main() {
+  AppInit.initGetIt();
+
   runApp(const MyApp());
 }
 
