@@ -38,19 +38,19 @@ class GetAllQuestionResponse {
 //     "message": "Question categories fetched successfully.",
 //     "apiName": "Get all categories.",
 //     "data": [
-//         {
-//             "id": 1,
-//             "name": "Self",
-//             "description": "",
-//             "price": 150.0,
-//             "suggestions": [
-//                 "Which is the right path for me ?",
-//                 "Where and what is my potential?",
-//                 "Do people around me like me?",
-//                 "Which gemstone is suitable for me?",
-//                 "Does my future hold success?",
-//                 "What do stars say about my life?"
-//             ]
-//         }
+        // {
+        //     "id": 1,
+        //     "name": "Self",
+        //     "description": "",
+        //     "price": 150.0,
+        //     "suggestions": [
+        //         "Which is the right path for me ?",
+        //         "Where and what is my potential?",
+        //         "Do people around me like me?",
+        //         "Which gemstone is suitable for me?",
+        //         "Does my future hold success?",
+        //         "What do stars say about my life?"
+        //     ]
+        // }
 //     ]
 // }
