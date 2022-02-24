@@ -1,8 +1,7 @@
 part of 'askquestion_bloc.dart';
 
-abstract class AskquestionEvent extends Equatable {
-  const AskquestionEvent();
-
-  @override
-  List<Object> get props => [];
+@freezed
+class AskquestionEvent with _$AskquestionEvent {
+  const factory AskquestionEvent.getQuestions() = GetQuestions;
+  const factory AskquestionEvent.navigateToProfile() = NavigateToProfile;
 }

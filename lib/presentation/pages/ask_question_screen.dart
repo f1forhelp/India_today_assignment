@@ -19,15 +19,15 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
 
   @override
   void initState() {
-    askquestionBloc = AskquestionBloc();
-    askquestionBloc.getAllQuestions();
+    askquestionBloc = AppInit.getIt<AskquestionBloc>();
+    askquestionBloc.add(const GetQuestions());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppInit.getIt<AskquestionBloc>(),
+    return BlocProvider.value(
+      value: askquestionBloc,
       child: BlocListener<AskquestionBloc, AskquestionState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -115,11 +115,28 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
                         child: Text("Ideas what to Ask (Select Any)",
                             style: KTextStyle.mainHeadingDark),
                       ),
-                      Column(
-                        children: List.generate(
-                          4,
-                          (index) => _IdeasListItem(),
-                        ),
+                      BlocBuilder<AskquestionBloc, AskquestionState>(
+                        builder: (context, state) {
+                          return state.questionFetchState.when(
+                            data: (val) {
+                              return Column(
+                                children: List.generate(
+                                  (val.data?.length ?? 0),
+                                  (index) => _IdeasListItem(),
+                                ),
+                              );
+                            },
+                            error: (val) {
+                              return Text("Error ${val.toString()}");
+                            },
+                            idle: () {
+                              return Text("Idle");
+                            },
+                            loading: () {
+                              return CircularProgressIndicator();
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -134,9 +151,9 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
 }
 
 class _IdeasListItem extends StatelessWidget {
-  const _IdeasListItem({
-    Key? key,
-  }) : super(key: key);
+  final String? question;
+
+  const _IdeasListItem({Key? key, this.question}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -160,8 +177,7 @@ class _IdeasListItem extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(
-                "When is the right for njn jnjnjl . kmkm kmkl jnu iu ibh bjhb jhbj h kk mmk mkmk mk mkm k mkm km km km k mk m km km km km km km k mk mk mk mk mk mk m km km km k mk mk k m kkb"),
+            child: Text(question ?? ""),
           )
         ],
       ),

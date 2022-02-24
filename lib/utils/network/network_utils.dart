@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import 'network_exceptions.dart';
+import 'network_exception.dart/network_exceptions.dart';
 
 class NetworkUtil {
   //Base Url for pointing to dev , qa or production server.

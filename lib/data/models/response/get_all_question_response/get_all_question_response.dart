@@ -4,7 +4,7 @@ import 'datum.dart';
 
 part 'get_all_question_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class GetAllQuestionResponse {
   String? httpStatus;
   int? httpStatusCode;

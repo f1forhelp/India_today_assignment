@@ -7,7 +7,7 @@ class Datum {
   int? id;
   String? name;
   String? description;
-  int? price;
+  double? price;
   List<String>? suggestions;
 
   Datum({
