@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:india_today_demo/presentation/bloc/ask_question/askquestion_bloc.dart';
+import 'package:india_today_demo/presentation/widgets/custom_appbar.dart';
 import 'package:india_today_demo/utils/app_init.dart';
 import 'package:india_today_demo/utils/constants/k_asset.dart';
 import 'package:india_today_demo/utils/constants/k_color.dart';
 import 'package:india_today_demo/utils/constants/k_text_style.dart';
 import 'package:india_today_demo/utils/helper/ui_helper.dart';
 
+import '../widgets/custom_dropdown_menu.dart';
+import '../widgets/custom_text_form_field.dart';
+
 class AskQuestionScreen extends StatefulWidget {
+  static const String id = "AskQuestionScreen";
   const AskQuestionScreen({Key? key}) : super(key: key);
 
   @override
@@ -35,7 +40,9 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: const _AppBarContent(),
+            appBar: const CustomAppBar(
+              content: _AppBarContent(),
+            ),
             body: SafeArea(
               child: Column(
                 children: [
@@ -173,48 +180,36 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
   }
 }
 
-class _AppBarContent extends StatelessWidget implements PreferredSizeWidget {
+class _AppBarContent extends StatelessWidget {
   const _AppBarContent({
     Key? key,
   }) : super(key: key);
 
   @override
-  Size get preferredSize => Size(1.sw, 46.h);
-
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      // ignore: avoid_unnecessary_containers
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 3.h),
-        constraints: const BoxConstraints(
-          maxHeight: 52,
-        ),
-        child: UiHelper.horizontalPadding(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset(
-                KAsset.hamburger,
-                fit: BoxFit.fitHeight,
-              ),
-              Image.asset(
-                KAsset.astroLogo,
-                fit: BoxFit.fitHeight,
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Image.asset(
-                    KAsset.profile,
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-              ),
-            ],
+    return UiHelper.horizontalPadding(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            KAsset.hamburger,
+            fit: BoxFit.fitHeight,
           ),
-        ),
+          Image.asset(
+            KAsset.astroLogo,
+            fit: BoxFit.fitHeight,
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Image.asset(
+                KAsset.profile,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -260,127 +255,6 @@ class _IdeasListItem extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class CustomTextFormField extends StatefulWidget {
-  final TextEditingController textEditingController;
-  final bool enableCounter;
-  final int? maxLength;
-  final int? maxLines;
-  const CustomTextFormField(
-      {Key? key,
-      required this.textEditingController,
-      this.enableCounter = false,
-      this.maxLength,
-      this.maxLines})
-      : super(key: key);
-
-  @override
-  _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
-}
-
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  int totalLetters = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Type a question here",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-          ),
-          maxLines: widget.maxLines,
-          maxLength: widget.maxLength,
-          controller: widget.textEditingController,
-          onChanged: (val) {
-            totalLetters = val.length;
-            setState(() {});
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class CustomDropDownMenu extends StatefulWidget {
-  final List<String> dropDownItemns;
-  final Function(String?) getSelected;
-  final String? hintText;
-  final String? intialValue;
-  const CustomDropDownMenu(
-      {Key? key,
-      required this.dropDownItemns,
-      required this.getSelected,
-      this.hintText,
-      this.intialValue})
-      : super(key: key);
-
-  @override
-  _CustomDropDownMenuState createState() => _CustomDropDownMenuState();
-}
-
-class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  String? selectedValue;
-
-  final TextStyle _textStyle = TextStyle(
-    fontSize: 18.sp,
-  );
-
-  callGetValInit() {
-    if (widget.intialValue != null && selectedValue == null) {
-      widget.getSelected(widget.intialValue);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    callGetValInit();
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5.r),
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 1,
-            color: Colors.black38,
-            offset: Offset(0, 1),
-          )
-        ],
-      ),
-      child: DropdownButton<String>(
-        isExpanded: true,
-        hint: Text(
-          widget.hintText ?? "",
-          style: _textStyle.copyWith(
-            color: Colors.black38,
-          ),
-        ),
-        underline: const SizedBox(),
-        value: selectedValue ?? widget.intialValue,
-        items: widget.dropDownItemns
-            .map<DropdownMenuItem<String>>(
-              (e) => DropdownMenuItem<String>(
-                value: e,
-                child: Text(
-                  e,
-                  style: _textStyle,
-                ),
-              ),
-            )
-            .toList(),
-        onChanged: (val) {
-          selectedValue = val;
-          widget.getSelected(val);
-          setState(() {});
-        },
       ),
     );
   }

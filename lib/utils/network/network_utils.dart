@@ -18,7 +18,11 @@ class NetworkUtil {
 
   //Application wide methods for network request.
   Future<Response<T>> get<T>(String url) async {
-    return await _dioClinet.get(url);
+    return await _dioClinet.get(url,
+        options: Options(headers: {
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4ODA5NzY1MTkxIiwiUm9sZXMiOltdLCJleHAiOjE2NzY0NjE0NzEsImlhdCI6MTY0NDkyNTQ3MX0.EVAhZLNeuKd7e7BstsGW5lYEtggbSfLD_aKqGFLpidgL7UHZTBues0MUQR8sqMD1267V4Y_VheBHpxwKWKA3lQ'
+        }));
   }
 
   Future<Response<T>> post<T>(String url) async {

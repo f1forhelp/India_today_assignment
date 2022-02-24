@@ -27,17 +27,17 @@ class AskquestionBloc extends Bloc<AskquestionEvent, AskquestionState> {
         ) {
     on<GetQuestions>(
       (event, emit) async {
-        await getAllQuestion(emit);
+        await _getAllQuestion(emit);
       },
     );
     on<SetCategory>(
       (event, emit) {
-        setCategory(emit, event);
+        _setCategory(emit, event);
       },
     );
   }
 
-  setCategory(Emitter<AskquestionState> emit, SetCategory event) {
+  _setCategory(Emitter<AskquestionState> emit, SetCategory event) {
     emit(
       state.copyWith(
         selectedSuggestion: _getAllQuestionResponse.data
@@ -50,7 +50,7 @@ class AskquestionBloc extends Bloc<AskquestionEvent, AskquestionState> {
     );
   }
 
-  getAllQuestion(Emitter<AskquestionState> emit) async {
+  _getAllQuestion(Emitter<AskquestionState> emit) async {
     BotToast.showLoading();
     emit(state.copyWith(questionFetchState: const ResultState.loading()));
     var res = await AskQuestionRepository.getAllQuestion();
