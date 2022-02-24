@@ -13,4 +13,14 @@ class UiHelper {
       child: child,
     );
   }
+
+  static Widget h1() => SizedBox(
+        height: 6.h,
+      );
+  static Widget h2() => SizedBox(
+        height: 10.h,
+      );
+  static Widget h3() => SizedBox(
+        height: 14.h,
+      );
 }

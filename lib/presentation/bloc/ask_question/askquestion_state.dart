@@ -2,15 +2,25 @@ part of 'askquestion_bloc.dart';
 
 class AskquestionState extends Equatable {
   final ResultState<GetAllQuestionResponse> questionFetchState;
-
-  const AskquestionState({required this.questionFetchState});
+  final List<String> categoryNames;
+  final List<String> selectedSuggestion;
+  const AskquestionState(
+      {required this.selectedSuggestion,
+      required this.questionFetchState,
+      required this.categoryNames});
 
   AskquestionState copyWith(
-      {ResultState<GetAllQuestionResponse>? questionFetchState}) {
+      {List<String>? selectedSuggestion,
+      ResultState<GetAllQuestionResponse>? questionFetchState,
+      List<String>? categoryNames}) {
     return AskquestionState(
-        questionFetchState: questionFetchState ?? this.questionFetchState);
+      selectedSuggestion: selectedSuggestion ?? this.selectedSuggestion,
+      categoryNames: categoryNames ?? this.categoryNames,
+      questionFetchState: questionFetchState ?? this.questionFetchState,
+    );
   }
 
   @override
-  List<Object> get props => [questionFetchState];
+  List<Object> get props =>
+      [questionFetchState, selectedSuggestion, categoryNames];
 }

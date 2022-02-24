@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:india_today_demo/presentation/bloc/ask_question/askquestion_bloc.dart';
 import 'package:india_today_demo/utils/app_init.dart';
+import 'package:india_today_demo/utils/constants/k_asset.dart';
 import 'package:india_today_demo/utils/constants/k_color.dart';
 import 'package:india_today_demo/utils/constants/k_text_style.dart';
 import 'package:india_today_demo/utils/helper/ui_helper.dart';
@@ -28,121 +29,190 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: askquestionBloc,
-      child: BlocListener<AskquestionBloc, AskquestionState>(
+      child: BlocConsumer<AskquestionBloc, AskquestionState>(
         listener: (context, state) {
           // TODO: implement listener
         },
-        child: Scaffold(
-          body: SafeArea(
-            child: Column(
-              children: [
-                // ignore: avoid_unnecessary_containers
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 8.h),
-                  decoration: const BoxDecoration(
-                    color: KColor.primayBlue,
-                  ),
-                  child: UiHelper.horizontalPadding(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Wallet Balance: ₹ 0",
-                          style: KTextStyle.mainHeadingDark.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(4.w),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black87,
-                              width: 1,
-                            ),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4.r),
-                          ),
-                          child: Text(
-                            "Add Money",
-                            style: TextStyle(
-                              color: KColor.primayBlue,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w800,
+        builder: (context, state) {
+          return Scaffold(
+            appBar: const _AppBarContent(),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  // ignore: avoid_unnecessary_containers
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    decoration: const BoxDecoration(
+                      color: KColor.primayBlue,
+                    ),
+                    child: UiHelper.horizontalPadding(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Wallet Balance : ₹ 0",
+                            style: KTextStyle.mainHeadingDark.copyWith(
+                              color: Colors.white,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.h, horizontal: 18.w),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black87,
+                                width: 1,
+                              ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            child: Text(
+                              "Add Money",
+                              style: TextStyle(
+                                color: KColor.primayBlue,
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                UiHelper.horizontalPadding(
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text("Ask a Question",
-                            style: KTextStyle.mainHeadingDark),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Seek accurate answer i mmimijn nun b bhb ybuy guy gitf itf iytfyit fiyt fiytf iytf iytf itf iytf iytf iytf iytf iytf iytfv hl jb ho78t tf ; og utre rsu yli yyt rtd titu yyt fiy tff",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: UiHelper.horizontalPadding(
+                        child: Column(
+                          children: [
+                            UiHelper.h2(),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Ask a Question",
+                                  style: KTextStyle.mainHeadingDark),
+                            ),
+                            UiHelper.h1(),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Seek accurate answers to your life problems and get guidance towards the right path. Wheather the problem is related to love,self,life,buisness,money,education or work, out astrologers will do an in depth study of your birth chart to provide personalized responses along with remedies.",
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            UiHelper.h2(),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Choose Category",
+                                style: KTextStyle.mainHeadingDark,
+                              ),
+                            ),
+                            UiHelper.h2(),
+                            CustomDropDownMenu(
+                              hintText: "Select Category",
+                              intialValue: state.categoryNames.isEmpty
+                                  ? null
+                                  : state.categoryNames.first,
+                              dropDownItemns: state.categoryNames,
+                              getSelected: (val) {
+                                BlocProvider.of<AskquestionBloc>(context)
+                                    .add(SetCategory(category: val ?? ""));
+                                // context.read<AskquestionBloc>().add(
+                                //       SetCategory(category: val ?? ""),
+                                //     );
+                              },
+                            ),
+                            UiHelper.h3(),
+                            CustomTextFormField(
+                              enableCounter: true,
+                              maxLength: 150,
+                              maxLines: 4,
+                              textEditingController: TextEditingController(),
+                            ),
+                            UiHelper.h2(),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Ideas what to Ask (Select Any)",
+                                  style: KTextStyle.mainHeadingDark),
+                            ),
+                            state.questionFetchState.when(
+                              data: (val) {
+                                return Column(
+                                  children: List.generate(
+                                    (state.selectedSuggestion.length),
+                                    (index) => _IdeasListItem(
+                                      question: state.selectedSuggestion[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              error: (val) {
+                                return Text("Error ${val.toString()}");
+                              },
+                              idle: () {
+                                return const Text("Idle");
+                              },
+                              loading: () {
+                                return const SizedBox();
+                              },
+                            )
+                          ],
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text("Choose Category",
-                            style: KTextStyle.mainHeadingDark),
-                      ),
-                      CustomDropDownMenu(
-                        dropDownItemns: const ["Love", "Hate", "SomeThing"],
-                        getSelected: (vval) {
-                          print(vval);
-                        },
-                      ),
-                      CustomTextFormField(
-                        enableCounter: true,
-                        maxLength: 3,
-                        maxLines: 4,
-                        textEditingController: TextEditingController(),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text("Ideas what to Ask (Select Any)",
-                            style: KTextStyle.mainHeadingDark),
-                      ),
-                      BlocBuilder<AskquestionBloc, AskquestionState>(
-                        builder: (context, state) {
-                          return state.questionFetchState.when(
-                            data: (val) {
-                              return Column(
-                                children: List.generate(
-                                  (val.data?.length ?? 0),
-                                  (index) => _IdeasListItem(),
-                                ),
-                              );
-                            },
-                            error: (val) {
-                              return Text("Error ${val.toString()}");
-                            },
-                            idle: () {
-                              return Text("Idle");
-                            },
-                            loading: () {
-                              return CircularProgressIndicator();
-                            },
-                          );
-                        },
-                      ),
-                    ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _AppBarContent extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBarContent({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Size get preferredSize => Size(1.sw, 46.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      // ignore: avoid_unnecessary_containers
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 3.h),
+        constraints: const BoxConstraints(
+          maxHeight: 52,
+        ),
+        child: UiHelper.horizontalPadding(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                KAsset.hamburger,
+                fit: BoxFit.fitHeight,
+              ),
+              Image.asset(
+                KAsset.astroLogo,
+                fit: BoxFit.fitHeight,
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Image.asset(
+                    KAsset.profile,
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -153,11 +223,17 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
 class _IdeasListItem extends StatelessWidget {
   final String? question;
 
-  const _IdeasListItem({Key? key, this.question}) : super(key: key);
+  _IdeasListItem({Key? key, this.question}) : super(key: key);
+
+  final TextStyle _textStyle = TextStyle(
+    fontSize: 14.sp,
+  );
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -167,6 +243,7 @@ class _IdeasListItem extends StatelessWidget {
         ),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 6),
@@ -177,7 +254,10 @@ class _IdeasListItem extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(question ?? ""),
+            child: Text(
+              question ?? "",
+              style: _textStyle,
+            ),
           )
         ],
       ),
@@ -232,9 +312,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 class CustomDropDownMenu extends StatefulWidget {
   final List<String> dropDownItemns;
   final Function(String?) getSelected;
-
+  final String? hintText;
+  final String? intialValue;
   const CustomDropDownMenu(
-      {Key? key, required this.dropDownItemns, required this.getSelected})
+      {Key? key,
+      required this.dropDownItemns,
+      required this.getSelected,
+      this.hintText,
+      this.intialValue})
       : super(key: key);
 
   @override
@@ -244,8 +329,19 @@ class CustomDropDownMenu extends StatefulWidget {
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   String? selectedValue;
 
+  final TextStyle _textStyle = TextStyle(
+    fontSize: 18.sp,
+  );
+
+  callGetValInit() {
+    if (widget.intialValue != null && selectedValue == null) {
+      widget.getSelected(widget.intialValue);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    callGetValInit();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       decoration: BoxDecoration(
@@ -261,13 +357,22 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
       ),
       child: DropdownButton<String>(
         isExpanded: true,
+        hint: Text(
+          widget.hintText ?? "",
+          style: _textStyle.copyWith(
+            color: Colors.black38,
+          ),
+        ),
         underline: const SizedBox(),
-        value: selectedValue,
+        value: selectedValue ?? widget.intialValue,
         items: widget.dropDownItemns
             .map<DropdownMenuItem<String>>(
               (e) => DropdownMenuItem<String>(
                 value: e,
-                child: Text(e),
+                child: Text(
+                  e,
+                  style: _textStyle,
+                ),
               ),
             )
             .toList(),
