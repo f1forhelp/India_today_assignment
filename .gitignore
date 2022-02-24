@@ -9,6 +9,8 @@
 .buildlog/
 .history
 .svn/
+*.freezed.dart
+*.g.dart
 
 # IntelliJ related
 *.iml
