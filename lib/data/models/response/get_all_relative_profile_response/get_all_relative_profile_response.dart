@@ -29,8 +29,6 @@ class GetAllRelativeProfileResponse {
   Map<String, dynamic> toJson() => _$GetAllRelativeProfileResponseToJson(this);
 }
 
-
-
 //-------------Sample Json --------------
 
 // {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:india_today_demo/presentation/widgets/custom_appbar.dart';
+import 'package:india_today_demo/presentation/widgets/custom_text_button.dart';
 import 'package:india_today_demo/utils/constants/k_color.dart';
 import 'package:india_today_demo/utils/constants/k_text_style.dart';
 
@@ -38,74 +39,93 @@ class _FrindFamilyProfileScreenState extends State<FrindFamilyProfileScreen> {
               content: _AppBarContent(),
             ),
             body: SafeArea(
-                child: Column(
+                child: Stack(
               children: [
-                UiHelper.h2(),
-                // ignore: avoid_unnecessary_containers
-                Container(
-                  width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(vertical: 14.h),
-                  color: Colors.orange.withOpacity(0.1),
-                  child: UiHelper.horizontalPadding(
-                    child: Text(
-                      "Friends And Family Profile",
-                      style: KTextStyle.mainHeadingDark
-                          .copyWith(color: Colors.orange),
-                    ),
-                  ),
-                ),
-                UiHelper.h2(),
-                Row(
+                Column(
                   children: [
-                    Expanded(
-                        flex: 2,
-                        child: Text("Name",
-                            textAlign: TextAlign.center,
-                            style: _textStyleLabel)),
-                    Expanded(
-                        flex: 2,
-                        child: Text("DOB",
-                            textAlign: TextAlign.center,
-                            style: _textStyleLabel)),
-                    Expanded(
-                        flex: 2,
-                        child: Text("TOB",
-                            textAlign: TextAlign.center,
-                            style: _textStyleLabel)),
-                    Expanded(
-                        flex: 2,
-                        child: Text("Relation",
-                            textAlign: TextAlign.center,
-                            style: _textStyleLabel)),
-                    Expanded(child: SizedBox()),
-                    Expanded(child: SizedBox()),
+                    UiHelper.h2(),
+                    // ignore: avoid_unnecessary_containers
+                    Container(
+                      width: double.maxFinite,
+                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                      color: Colors.orange.withOpacity(0.1),
+                      child: UiHelper.horizontalPadding(
+                        child: Text(
+                          "Friends And Family Profile",
+                          style: KTextStyle.mainHeadingDark
+                              .copyWith(color: Colors.orange),
+                        ),
+                      ),
+                    ),
+                    UiHelper.h2(),
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 2,
+                            child: Text("Name",
+                                textAlign: TextAlign.center,
+                                style: _textStyleLabel)),
+                        Expanded(
+                            flex: 2,
+                            child: Text("DOB",
+                                textAlign: TextAlign.center,
+                                style: _textStyleLabel)),
+                        Expanded(
+                            flex: 2,
+                            child: Text("TOB",
+                                textAlign: TextAlign.center,
+                                style: _textStyleLabel)),
+                        Expanded(
+                            flex: 2,
+                            child: Text("Relation",
+                                textAlign: TextAlign.center,
+                                style: _textStyleLabel)),
+                        Expanded(child: SizedBox()),
+                        Expanded(child: SizedBox()),
+                      ],
+                    ),
+                    state.relativesProfileFetchState.when(
+                        idle: () => const SizedBox(),
+                        loading: () => const SizedBox(),
+                        data: (val) {
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: val.data?.allRelatives?.length ?? 0,
+                              itemBuilder: (context, i) {
+                                return UiHelper.horizontalPadding(
+                                  child: _ListItem(
+                                    onDelete: () {
+                                      BlocProvider.of<FamilyProfileBloc>(
+                                              context)
+                                          .add(
+                                        DeleteProfile(
+                                            uuid: val.data?.allRelatives![i]
+                                                    .uuid ??
+                                                ""),
+                                      );
+                                    },
+                                    dob:
+                                        "${val.data?.allRelatives![i].birthDetails?.dobDay}-${val.data?.allRelatives![i].birthDetails?.dobMonth}-${val.data?.allRelatives![i].birthDetails?.dobYear}",
+                                    name: val.data?.allRelatives![i].firstName,
+                                    relation:
+                                        val.data?.allRelatives![i].relation,
+                                    tob:
+                                        "${val.data?.allRelatives![i].birthDetails?.tobHour}:${val.data?.allRelatives![i].birthDetails?.tobMin}",
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        error: (v) {
+                          return const SizedBox();
+                        })
                   ],
                 ),
-                state.relativesProfileFetchState.when(
-                    idle: () => const SizedBox(),
-                    loading: () => const SizedBox(),
-                    data: (val) {
-                      return Expanded(
-                        child: ListView.builder(
-                          itemCount: val.data?.allRelatives?.length ?? 0,
-                          itemBuilder: (context, i) {
-                            return UiHelper.horizontalPadding(
-                              child: _ListItem(
-                                dob:
-                                    "${val.data?.allRelatives![i].birthDetails?.dobDay}-${val.data?.allRelatives![i].birthDetails?.dobMonth}-${val.data?.allRelatives![i].birthDetails?.dobYear}",
-                                name: val.data?.allRelatives![i].firstName,
-                                relation: val.data?.allRelatives![i].relation,
-                                tob:
-                                    "${val.data?.allRelatives![i].birthDetails?.tobHour}:${val.data?.allRelatives![i].birthDetails?.tobMin}",
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    error: (v) {
-                      return const SizedBox();
-                    })
+                Align(
+                  alignment: Alignment(0, 0.8),
+                  child: CustomTextButton(text: "Create Profile"),
+                ),
               ],
             )),
           );

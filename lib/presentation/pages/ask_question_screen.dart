@@ -133,7 +133,6 @@ class _AskQuestionScreenState extends State<AskQuestionScreen> {
                             ),
                             UiHelper.h3(),
                             CustomTextFormField(
-                              enableCounter: true,
                               maxLength: 150,
                               maxLines: 4,
                               textEditingController: TextEditingController(),

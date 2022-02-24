@@ -3,15 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final TextEditingController textEditingController;
-  final bool enableCounter;
   final int? maxLength;
   final int? maxLines;
+  final String? topLabel;
+  final String? hintText;
   const CustomTextFormField(
       {Key? key,
       required this.textEditingController,
-      this.enableCounter = false,
       this.maxLength,
-      this.maxLines})
+      this.maxLines,
+      this.topLabel,
+      this.hintText})
       : super(key: key);
 
   @override
@@ -25,9 +27,18 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        widget.topLabel == null
+            ? const SizedBox()
+            : Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(widget.topLabel ?? ""),
+                ),
+              ),
         TextFormField(
           decoration: InputDecoration(
-            hintText: "Type a question here",
+            hintText: widget.hintText,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6.r),
             ),
