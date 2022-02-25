@@ -8,6 +8,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class CustomAutoSuggestField extends StatefulWidget {
   final TextEditingController? textEditingController;
+  final String? Function(String?)? validator;
   final int? maxLength;
   final String? hintText;
   final String? initialValue;
@@ -21,6 +22,7 @@ class CustomAutoSuggestField extends StatefulWidget {
     this.onChange,
     this.initialValue,
     required this.suggestionCallBack,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,8 @@ class _CustomAutoSuggestFieldState extends State<CustomAutoSuggestField> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TypeAheadField<Datum>(
+        TypeAheadFormField<Datum>(
+          validator: widget.validator,
           textFieldConfiguration: TextFieldConfiguration(
               controller: widget.textEditingController,
               style: KTextStyle.textFieldStyle,

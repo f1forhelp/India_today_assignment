@@ -15,6 +15,7 @@ import 'package:india_today_demo/presentation/widgets/custom_text_button.dart';
 import 'package:india_today_demo/presentation/widgets/custom_text_form_field.dart';
 import 'package:india_today_demo/utils/constants/k_color.dart';
 import 'package:india_today_demo/utils/constants/k_text_style.dart';
+import 'package:india_today_demo/utils/helper/validation_helper.dart';
 
 import '../../utils/constants/k_asset.dart';
 import '../../utils/helper/ui_helper.dart';
@@ -32,6 +33,7 @@ class UpdateEditProfileScreen extends StatefulWidget {
 }
 
 class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
+  late GlobalKey<FormState> _formkey;
   final TextStyle _textStyleLabel = TextStyle(
     fontSize: 12.sp,
     color: KColor.primayBlue,
@@ -42,6 +44,7 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
 
   @override
   void initState() {
+    _formkey = GlobalKey<FormState>();
     _placeController = TextEditingController(
         text: widget.updateAddUserRequest?.birthPlace?.placeName);
     updateAddUserRequest = UpdateAddUserRequest.fromJson(
@@ -80,326 +83,356 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: const CustomAppBar(
-              content: _AppBarContent(),
+            appBar: CustomAppBar(
+              content: _AppBarContent(onBackPress: () {
+                Navigator.pop(context);
+              }),
             ),
             body: SafeArea(
               child: UiHelper.horizontalPadding(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      UiHelper.h2(),
-                      // ignore: avoid_unnecessary_containers
-                      Container(
-                        width: double.maxFinite,
-                        padding: EdgeInsets.symmetric(vertical: 14.h),
-                        color: Colors.orange.withOpacity(0.1),
-                        child: UiHelper.horizontalPadding(
-                          child: Text(
-                            widget.updateAddUserRequest == null
-                                ? "Update Profile"
-                                : "Create Profile",
-                            style: KTextStyle.mainHeadingDark
-                                .copyWith(color: Colors.orange),
+                  child: Form(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    key: _formkey,
+                    child: Column(
+                      children: [
+                        UiHelper.h2(),
+                        // ignore: avoid_unnecessary_containers
+                        Container(
+                          width: double.maxFinite,
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
+                          color: Colors.orange.withOpacity(0.1),
+                          child: UiHelper.horizontalPadding(
+                            child: Text(
+                              widget.updateAddUserRequest == null
+                                  ? "Update Profile"
+                                  : "Create Profile",
+                              style: KTextStyle.mainHeadingDark
+                                  .copyWith(color: Colors.orange),
+                            ),
                           ),
                         ),
-                      ),
-                      UiHelper.h2(),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              topLabel: "First Name",
-                              initialValue:
-                                  widget.updateAddUserRequest?.firstName,
-                              key: Key(
-                                  widget.updateAddUserRequest?.firstName ?? ""),
-                              onChange: (val) {
-                                updateAddUserRequest.firstName = val;
-                              },
-                            ),
-                          ),
-                          UiHelper.w2(),
-                          Expanded(
-                            child: CustomTextFormField(
-                              topLabel: "Last Name",
-                              key: Key(
-                                  widget.updateAddUserRequest?.lastName ?? ""),
-                              initialValue:
-                                  widget.updateAddUserRequest?.lastName,
-                              onChange: (val) {
-                                updateAddUserRequest.lastName = val;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      UiHelper.h2(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Date of birth",
-                          style: KTextStyle.textFiledTopHint,
-                        ),
-                      ),
-                      UiHelper.h1(),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              maxLength: 2,
-                              textInputType: TextInputType.number,
-                              hintText: "Ex 23",
-                              key: Key(
-                                widget.updateAddUserRequest?.birthDetails
-                                        ?.dobDay
-                                        ?.toString() ??
-                                    "dd",
-                              ),
-                              initialValue: widget.updateAddUserRequest
-                                      ?.birthDetails?.dobDay
-                                      ?.toString() ??
-                                  "",
-                              onChange: (val) {
-                                updateAddUserRequest.birthDetails?.dobDay =
-                                    int.tryParse(val);
-                              },
-                            ),
-                          ),
-                          UiHelper.w2(),
-                          Expanded(
-                            child: CustomTextFormField(
-                              maxLength: 2,
-                              initialValue: widget.updateAddUserRequest
-                                      ?.birthDetails?.dobMonth
-                                      ?.toString() ??
-                                  "",
-                              key: Key(
-                                widget.updateAddUserRequest?.birthDetails
-                                        ?.dobDay
-                                        ?.toString() ??
-                                    "MM",
-                              ),
-                              textInputType: TextInputType.number,
-                              hintText: "Ex 12",
-                              onChange: (val) {
-                                updateAddUserRequest.birthDetails?.dobMonth =
-                                    int.tryParse(val);
-                              },
-                            ),
-                          ),
-                          UiHelper.w2(),
-                          Expanded(
-                            child: CustomTextFormField(
-                              key: Key(
-                                widget.updateAddUserRequest?.birthDetails
-                                        ?.dobDay
-                                        ?.toString() ??
-                                    "yy",
-                              ),
-                              hintText: "Ex 2020",
-                              initialValue: widget.updateAddUserRequest
-                                      ?.birthDetails?.dobYear
-                                      ?.toString() ??
-                                  "",
-                              maxLength: 4,
-                              textInputType: TextInputType.number,
-                              onChange: (val) {
-                                updateAddUserRequest.birthDetails?.dobYear =
-                                    int.tryParse(val);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      UiHelper.h2(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Time of birth",
-                          style: KTextStyle.textFiledTopHint,
-                        ),
-                      ),
-                      UiHelper.h1(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              initialValue: widget.updateAddUserRequest
-                                      ?.birthDetails?.tobHour
-                                      ?.toString() ??
-                                  "",
-                              key: Key(
-                                widget.updateAddUserRequest?.birthDetails
-                                        ?.tobHour
-                                        ?.toString() ??
-                                    "",
-                              ),
-                              maxLength: 2,
-                              textInputType: TextInputType.number,
-                              onChange: (val) {
-                                updateAddUserRequest.birthDetails?.tobHour =
-                                    int.tryParse(val);
-                              },
-                            ),
-                          ),
-                          UiHelper.w2(),
-                          Expanded(
-                            child: CustomTextFormField(
-                              maxLength: 2,
-                              textInputType: TextInputType.number,
-                              initialValue: widget.updateAddUserRequest
-                                      ?.birthDetails?.tobMin
-                                      ?.toString() ??
-                                  "",
-                              key: Key(
-                                widget.updateAddUserRequest?.birthDetails
-                                        ?.tobMin
-                                        ?.toString() ??
-                                    "yy",
-                              ),
-                              onChange: (val) {
-                                updateAddUserRequest.birthDetails?.tobMin =
-                                    int.tryParse(val);
-                              },
-                            ),
-                          ),
-                          UiHelper.w2(),
-                          Expanded(
-                            child: Center(
-                              child: AmPmSelector(
-                                initalValueIsAm: (updateAddUserRequest
-                                            .birthDetails?.meridiem ==
-                                        "AM"
-                                    ? true
-                                    : false),
-                                key: Key(updateAddUserRequest
-                                        .birthDetails?.meridiem
-                                        ?.toString() ??
-                                    ""),
-                                isAm: (p0) {
-                                  updateAddUserRequest.birthDetails?.meridiem =
-                                      p0 ? "AM" : "PM";
+                        UiHelper.h2(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextFormField(
+                                validator: ValidationHelper.validateTextField,
+                                topLabel: "First Name",
+                                initialValue:
+                                    widget.updateAddUserRequest?.firstName,
+                                key: Key(
+                                    widget.updateAddUserRequest?.firstName ??
+                                        ""),
+                                onChange: (val) {
+                                  updateAddUserRequest.firstName = val;
                                 },
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      UiHelper.h2(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Place of birth",
-                          style: KTextStyle.textFiledTopHint,
+                            UiHelper.w2(),
+                            Expanded(
+                              child: CustomTextFormField(
+                                validator: ValidationHelper.validateTextField,
+                                topLabel: "Last Name",
+                                key: Key(
+                                    widget.updateAddUserRequest?.lastName ??
+                                        ""),
+                                initialValue:
+                                    widget.updateAddUserRequest?.lastName,
+                                onChange: (val) {
+                                  updateAddUserRequest.lastName = val;
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      UiHelper.h1(),
-                      CustomAutoSuggestField(
-                        onChange: (p0) {
-                          updateAddUserRequest.birthPlace?.placeId = p0.placeId;
-                          updateAddUserRequest.birthPlace?.placeName =
-                              p0.placeName;
-                        },
-                        textEditingController: _placeController,
-                        suggestionCallBack: (p0) async {
-                          return tempFunc(p0);
-                        },
-                      ),
-                      // CustomTextFormField(
-                      //   hintText: "Plasce of Birth",
-                      //   onChange: (val) {
-                      //     updateAddUserRequest.birthPlace?.placeName = val;
-                      //   },
-                      // ),
-                      UiHelper.h3(),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                UiHelper.h2(),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Gender",
-                                    style: KTextStyle.textFiledTopHint,
-                                  ),
-                                ),
-                                UiHelper.h1(),
-                                CustomDropDownMenu(
-                                  intialValue:
-                                      widget.updateAddUserRequest?.gender,
-                                  getSelected: (p0) {
-                                    updateAddUserRequest.gender = p0;
-                                  },
-                                  dropDownItemns: ["MALE", "FEMALE"],
-                                ),
-                              ],
-                            ),
+                        UiHelper.h2(),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Date of birth",
+                            style: KTextStyle.textFiledTopHint,
                           ),
-                          UiHelper.w4(),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                UiHelper.h2(),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Relation",
-                                    style: KTextStyle.textFiledTopHint,
-                                  ),
+                        ),
+                        UiHelper.h1(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomTextFormField(
+                                validator: ValidationHelper.validateTextField,
+                                maxLength: 2,
+                                textInputType: TextInputType.number,
+                                hintText: "Ex 23",
+                                key: Key(
+                                  widget.updateAddUserRequest?.birthDetails
+                                          ?.dobDay
+                                          ?.toString() ??
+                                      "dd",
                                 ),
-                                UiHelper.h1(),
-                                CustomDropDownMenu(
-                                  // intialValue:
-                                  //     widget.updateAddUserRequest?.relation,
-                                  getSelected: (p0) {
-                                    if (p0 == "Brother") {
-                                      updateAddUserRequest.relationId = 3;
-                                    }
-                                    if (p0 == "Sister") {
-                                      updateAddUserRequest.relationId = 4;
-                                    }
-                                    if (p0 == "Father") {
-                                      updateAddUserRequest.relationId = 1;
-                                    }
+                                initialValue: widget.updateAddUserRequest
+                                        ?.birthDetails?.dobDay
+                                        ?.toString() ??
+                                    "",
+                                onChange: (val) {
+                                  updateAddUserRequest.birthDetails?.dobDay =
+                                      int.tryParse(val);
+                                },
+                              ),
+                            ),
+                            UiHelper.w2(),
+                            Expanded(
+                              child: CustomTextFormField(
+                                validator: ValidationHelper.validateTextField,
+                                maxLength: 2,
+                                initialValue: widget.updateAddUserRequest
+                                        ?.birthDetails?.dobMonth
+                                        ?.toString() ??
+                                    "",
+                                key: Key(
+                                  widget.updateAddUserRequest?.birthDetails
+                                          ?.dobDay
+                                          ?.toString() ??
+                                      "MM",
+                                ),
+                                textInputType: TextInputType.number,
+                                hintText: "Ex 12",
+                                onChange: (val) {
+                                  updateAddUserRequest.birthDetails?.dobMonth =
+                                      int.tryParse(val);
+                                },
+                              ),
+                            ),
+                            UiHelper.w2(),
+                            Expanded(
+                              child: CustomTextFormField(
+                                validator: ValidationHelper.validateTextField,
+                                key: Key(
+                                  widget.updateAddUserRequest?.birthDetails
+                                          ?.dobDay
+                                          ?.toString() ??
+                                      "yy",
+                                ),
+                                hintText: "Ex 2020",
+                                initialValue: widget.updateAddUserRequest
+                                        ?.birthDetails?.dobYear
+                                        ?.toString() ??
+                                    "",
+                                maxLength: 4,
+                                textInputType: TextInputType.number,
+                                onChange: (val) {
+                                  updateAddUserRequest.birthDetails?.dobYear =
+                                      int.tryParse(val);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        UiHelper.h2(),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Time of birth",
+                            style: KTextStyle.textFiledTopHint,
+                          ),
+                        ),
+                        UiHelper.h1(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: CustomTextFormField(
+                                validator: ValidationHelper.validateTextField,
+                                initialValue: widget.updateAddUserRequest
+                                        ?.birthDetails?.tobHour
+                                        ?.toString() ??
+                                    "",
+                                key: Key(
+                                  widget.updateAddUserRequest?.birthDetails
+                                          ?.tobHour
+                                          ?.toString() ??
+                                      "",
+                                ),
+                                maxLength: 2,
+                                textInputType: TextInputType.number,
+                                onChange: (val) {
+                                  updateAddUserRequest.birthDetails?.tobHour =
+                                      int.tryParse(val);
+                                },
+                              ),
+                            ),
+                            UiHelper.w2(),
+                            Expanded(
+                              child: CustomTextFormField(
+                                validator: ValidationHelper.validateTextField,
+                                maxLength: 2,
+                                textInputType: TextInputType.number,
+                                initialValue: widget.updateAddUserRequest
+                                        ?.birthDetails?.tobMin
+                                        ?.toString() ??
+                                    "",
+                                key: Key(
+                                  widget.updateAddUserRequest?.birthDetails
+                                          ?.tobMin
+                                          ?.toString() ??
+                                      "yy",
+                                ),
+                                onChange: (val) {
+                                  updateAddUserRequest.birthDetails?.tobMin =
+                                      int.tryParse(val);
+                                },
+                              ),
+                            ),
+                            UiHelper.w2(),
+                            Expanded(
+                              child: Center(
+                                child: AmPmSelector(
+                                  initalValueIsAm: (updateAddUserRequest
+                                                  .birthDetails?.meridiem ==
+                                              "AM" ||
+                                          updateAddUserRequest
+                                                  .birthDetails?.meridiem ==
+                                              null
+                                      ? true
+                                      : false),
+                                  key: Key(updateAddUserRequest
+                                          .birthDetails?.meridiem
+                                          ?.toString() ??
+                                      ""),
+                                  isAm: (p0) {
+                                    updateAddUserRequest.birthDetails
+                                        ?.meridiem = p0 ? "AM" : "PM";
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        UiHelper.h2(),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Place of birth",
+                            style: KTextStyle.textFiledTopHint,
+                          ),
+                        ),
+                        UiHelper.h1(),
+                        CustomAutoSuggestField(
+                          validator: ValidationHelper.validateTextField,
+                          onChange: (p0) {
+                            updateAddUserRequest.birthPlace?.placeId =
+                                p0.placeId;
+                            updateAddUserRequest.birthPlace?.placeName =
+                                p0.placeName;
+                          },
+                          textEditingController: _placeController,
+                          suggestionCallBack: (p0) async {
+                            return tempFunc(p0);
+                          },
+                        ),
+                        // CustomTextFormField(
+                        //   hintText: "Plasce of Birth",
+                        //   onChange: (val) {
+                        //     updateAddUserRequest.birthPlace?.placeName = val;
+                        //   },
+                        // ),
+                        UiHelper.h3(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  UiHelper.h2(),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Gender",
+                                      style: KTextStyle.textFiledTopHint,
+                                    ),
+                                  ),
+                                  UiHelper.h1(),
+                                  CustomDropDownMenu(
+                                    validator:
+                                        ValidationHelper.validateTextField,
+                                    intialValue:
+                                        widget.updateAddUserRequest?.gender,
+                                    getSelected: (p0) {
+                                      updateAddUserRequest.gender = p0;
+                                    },
+                                    dropDownItemns: ["MALE", "FEMALE"],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            UiHelper.w4(),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  UiHelper.h2(),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Relation",
+                                      style: KTextStyle.textFiledTopHint,
+                                    ),
+                                  ),
+                                  UiHelper.h1(),
+                                  CustomDropDownMenu(
+                                    validator:
+                                        ValidationHelper.validateTextField,
+                                    intialValue:
+                                        widget.updateAddUserRequest?.relation,
+                                    getSelected: (p0) {
+                                      if (p0 == "Brother") {
+                                        updateAddUserRequest.relationId = 3;
+                                      }
+                                      if (p0 == "Sister") {
+                                        updateAddUserRequest.relationId = 4;
+                                      }
+                                      if (p0 == "Father") {
+                                        updateAddUserRequest.relationId = 1;
+                                      }
 
-                                    updateAddUserRequest.relation = p0;
-                                  },
-                                  dropDownItemns: [
-                                    "Brother",
-                                    "Sister",
-                                    "Father"
-                                  ],
-                                ),
-                              ],
+                                      updateAddUserRequest.relation = p0;
+                                    },
+                                    dropDownItemns: [
+                                      "Brother",
+                                      "Sister",
+                                      "Father"
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      UiHelper.h4(),
-                      CustomTextButton(
-                        onTap: () {
-                          if (widget.updateAddUserRequest == null) {
-                            BlocProvider.of<FamilyProfileBloc>(context).add(
-                              CreateProfile(
-                                  updateAddUserRequest: updateAddUserRequest),
-                            );
-                          } else {
-                            BlocProvider.of<FamilyProfileBloc>(context).add(
-                              UpdateProfile(
-                                  uuid: widget.updateAddUserRequest?.uuid ?? "",
-                                  updateAddUserRequest: updateAddUserRequest),
-                            );
-                          }
-                        },
-                        text: widget.updateAddUserRequest == null
-                            ? "Create Profile"
-                            : "Save Changes",
-                      )
-                    ],
+                          ],
+                        ),
+                        UiHelper.h4(),
+                        CustomTextButton(
+                          onTap: () {
+                            if (_formkey.currentState?.validate() ?? false) {
+                              if (widget.updateAddUserRequest == null) {
+                                BlocProvider.of<FamilyProfileBloc>(context).add(
+                                  CreateProfile(
+                                      updateAddUserRequest:
+                                          updateAddUserRequest),
+                                );
+                              } else {
+                                BlocProvider.of<FamilyProfileBloc>(context).add(
+                                  UpdateProfile(
+                                      uuid: widget.updateAddUserRequest?.uuid ??
+                                          "",
+                                      updateAddUserRequest:
+                                          updateAddUserRequest),
+                                );
+                              }
+                            }
+                          },
+                          text: widget.updateAddUserRequest == null
+                              ? "Create Profile"
+                              : "Save Changes",
+                        ),
+                        UiHelper.h4(),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -433,6 +466,7 @@ class _AmPmSelectorState extends State<AmPmSelector> {
   @override
   void initState() {
     isAm = widget.initalValueIsAm;
+    widget.isAm(isAm);
     super.initState();
   }
 
@@ -509,9 +543,9 @@ class _AmPmSelectorState extends State<AmPmSelector> {
 }
 
 class _AppBarContent extends StatelessWidget {
-  const _AppBarContent({
-    Key? key,
-  }) : super(key: key);
+  final Function onBackPress;
+
+  const _AppBarContent({Key? key, required this.onBackPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -519,11 +553,17 @@ class _AppBarContent extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.orange,
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: GestureDetector(
+              onTap: () {
+                onBackPress();
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.orange,
+                size: 25.sp,
+              ),
             ),
           ),
           Image.asset(

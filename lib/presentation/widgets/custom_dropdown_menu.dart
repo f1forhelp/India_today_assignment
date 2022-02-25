@@ -6,12 +6,14 @@ class CustomDropDownMenu extends StatefulWidget {
   final Function(String?) getSelected;
   final String? hintText;
   final String? intialValue;
+  final String? Function(String?)? validator;
   const CustomDropDownMenu(
       {Key? key,
       required this.dropDownItemns,
       required this.getSelected,
       this.hintText,
-      this.intialValue})
+      this.intialValue,
+      this.validator})
       : super(key: key);
 
   @override
@@ -34,46 +36,33 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   @override
   Widget build(BuildContext context) {
     callGetValInit();
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5.r),
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 1,
-            color: Colors.black38,
-            offset: Offset(0, 1),
-          )
-        ],
-      ),
-      child: DropdownButton<String>(
-        isExpanded: true,
-        hint: Text(
-          widget.hintText ?? "",
-          style: _textStyle.copyWith(
-            color: Colors.black38,
-          ),
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(border: OutlineInputBorder()),
+      validator: widget.validator,
+      isExpanded: true,
+      hint: Text(
+        widget.hintText ?? "",
+        style: _textStyle.copyWith(
+          color: Colors.black38,
         ),
-        underline: const SizedBox(),
-        value: selectedValue ?? widget.intialValue,
-        items: widget.dropDownItemns
-            .map<DropdownMenuItem<String>>(
-              (e) => DropdownMenuItem<String>(
-                value: e,
-                child: Text(
-                  e,
-                  style: _textStyle,
-                ),
-              ),
-            )
-            .toList(),
-        onChanged: (val) {
-          selectedValue = val;
-          widget.getSelected(val);
-          setState(() {});
-        },
       ),
+      value: selectedValue ?? widget.intialValue,
+      items: widget.dropDownItemns
+          .map<DropdownMenuItem<String>>(
+            (e) => DropdownMenuItem<String>(
+              value: e,
+              child: Text(
+                e,
+                style: _textStyle,
+              ),
+            ),
+          )
+          .toList(),
+      onChanged: (val) {
+        selectedValue = val;
+        widget.getSelected(val);
+        setState(() {});
+      },
     );
   }
 }

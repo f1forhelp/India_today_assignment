@@ -6,7 +6,7 @@ import 'package:india_today_demo/presentation/pages/update_edit_profile_screen.d
 
 class AppRoutes {
   static String getInitialRoute() {
-    return FrindFamilyProfileScreen.id;
+    return AskQuestionScreen.id;
   }
 
   static Route<dynamic>? generateRoutes(RouteSettings? routeSettings) {

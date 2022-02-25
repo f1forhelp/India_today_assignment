@@ -37,8 +37,10 @@ class _FrindFamilyProfileScreenState extends State<FrindFamilyProfileScreen> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: const CustomAppBar(
-              content: _AppBarContent(),
+            appBar: CustomAppBar(
+              content: _AppBarContent(onBackPress: () {
+                Navigator.pop(context);
+              }),
             ),
             body: SafeArea(
                 child: Stack(
@@ -96,8 +98,8 @@ class _FrindFamilyProfileScreenState extends State<FrindFamilyProfileScreen> {
                               itemBuilder: (context, i) {
                                 return UiHelper.horizontalPadding(
                                   child: _ListItem(
-                                    onEdit: () {
-                                      Navigator.pushNamed(
+                                    onEdit: () async {
+                                      await Navigator.pushNamed(
                                         context,
                                         UpdateEditProfileScreen.id,
                                         arguments:
@@ -106,6 +108,9 @@ class _FrindFamilyProfileScreenState extends State<FrindFamilyProfileScreen> {
                                                     .toJson() ??
                                                 {}),
                                       );
+                                      BlocProvider.of<FamilyProfileBloc>(
+                                              context)
+                                          .add(const GetAllProfile());
                                     },
                                     onDelete: () {
                                       BlocProvider.of<FamilyProfileBloc>(
@@ -139,9 +144,11 @@ class _FrindFamilyProfileScreenState extends State<FrindFamilyProfileScreen> {
                   alignment: Alignment(0, 0.8),
                   child: CustomTextButton(
                       text: "Create Profile",
-                      onTap: () {
-                        Navigator.pushNamed(
+                      onTap: () async {
+                        await Navigator.pushNamed(
                             context, UpdateEditProfileScreen.id);
+                        BlocProvider.of<FamilyProfileBloc>(context)
+                            .add(const GetAllProfile());
                       }),
                 ),
               ],
@@ -239,9 +246,9 @@ class _ListItem extends StatelessWidget {
 }
 
 class _AppBarContent extends StatelessWidget {
-  const _AppBarContent({
-    Key? key,
-  }) : super(key: key);
+  final Function onBackPress;
+
+  const _AppBarContent({Key? key, required this.onBackPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -249,11 +256,16 @@ class _AppBarContent extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.orange,
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: GestureDetector(
+              onTap: () {
+                onBackPress();
+              },
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.orange,
+              ),
             ),
           ),
           Image.asset(
