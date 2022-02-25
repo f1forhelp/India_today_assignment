@@ -17,3 +17,5 @@ samples, guidance on mobile development, and a full API reference.
 
 
 - rds - remote data source
+## Command for generating models
+- flutter pub run build_runner build --delete-conflicting-outputsw
