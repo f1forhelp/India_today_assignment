@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:india_today_demo/data/models/request/update_add_user_request/update_add_user_request.dart';
 import 'package:india_today_demo/data/models/response/general_response/general_response.dart';
 import 'package:india_today_demo/data/models/response/get_all_relative_profile_response/get_all_relative_profile_response.dart';
 import 'package:india_today_demo/data/models/response/get_location_detail_response/get_location_detail_response.dart';
@@ -62,16 +63,46 @@ class FamilyProfileBloc extends Bloc<FamilyProfileEvent, FamilyProfileState> {
     });
   }
 
-  _updateProfile(DeleteProfile event, Emitter<FamilyProfileState> emit) async {
+  _updateProfile(UpdateProfile event, Emitter<FamilyProfileState> emit) async {
     BotToast.showLoading();
-    state.copyWith(profileDeleteState: const ResultState.loading());
-    var res = await RelativeProfileRepository.deleteProfile(uuid: event.uuid);
+    state.copyWith(profileUpdateState: const ResultState.loading());
+    var res = await RelativeProfileRepository.updateProfile(
+        uuid: event.uuid, updateAddUserRequest: event.updateAddUserRequest);
     res.when(success: (v) {
       BotToast.showText(text: v.message ?? "");
-      emit(state.copyWith(profileDeleteState: ResultState.data(data: v)));
+      emit(state.copyWith(profileUpdateState: ResultState.data(data: v)));
     }, failure: (e) {
       BotToast.showText(text: e.toString());
-      emit(state.copyWith(profileDeleteState: ResultState.error(error: e)));
+      emit(state.copyWith(profileUpdateState: ResultState.error(error: e)));
+    });
+  }
+
+  _createProfile(CreateProfile event, Emitter<FamilyProfileState> emit) async {
+    BotToast.showLoading();
+    state.copyWith(profileCreateState: const ResultState.loading());
+    var res = await RelativeProfileRepository.addProfile(
+        updateAddUserRequest: event.updateAddUserRequest);
+    res.when(success: (v) {
+      BotToast.showText(text: v.message ?? "");
+      emit(state.copyWith(profileCreateState: ResultState.data(data: v)));
+    }, failure: (e) {
+      BotToast.showText(text: e.toString());
+      emit(state.copyWith(profileCreateState: ResultState.error(error: e)));
+    });
+  }
+
+  _getLocationDetail(
+      CreateProfile event, Emitter<FamilyProfileState> emit) async {
+    BotToast.showLoading();
+    state.copyWith(profileCreateState: const ResultState.loading());
+    var res = await RelativeProfileRepository.addProfile(
+        updateAddUserRequest: event.updateAddUserRequest);
+    res.when(success: (v) {
+      BotToast.showText(text: v.message ?? "");
+      emit(state.copyWith(profileCreateState: ResultState.data(data: v)));
+    }, failure: (e) {
+      BotToast.showText(text: e.toString());
+      emit(state.copyWith(profileCreateState: ResultState.error(error: e)));
     });
   }
 }
