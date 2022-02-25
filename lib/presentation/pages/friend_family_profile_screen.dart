@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:india_today_demo/data/models/request/update_add_user_request/update_add_user_request.dart';
 import 'package:india_today_demo/presentation/pages/update_edit_profile_screen.dart';
 import 'package:india_today_demo/presentation/widgets/custom_appbar.dart';
 import 'package:india_today_demo/presentation/widgets/custom_text_button.dart';
@@ -95,6 +96,17 @@ class _FrindFamilyProfileScreenState extends State<FrindFamilyProfileScreen> {
                               itemBuilder: (context, i) {
                                 return UiHelper.horizontalPadding(
                                   child: _ListItem(
+                                    onEdit: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        UpdateEditProfileScreen.id,
+                                        arguments:
+                                            UpdateAddUserRequest.fromJson(val
+                                                    .data?.allRelatives![i]
+                                                    .toJson() ??
+                                                {}),
+                                      );
+                                    },
                                     onDelete: () {
                                       BlocProvider.of<FamilyProfileBloc>(
                                               context)

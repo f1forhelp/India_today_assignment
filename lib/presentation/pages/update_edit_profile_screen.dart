@@ -44,12 +44,20 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
   void initState() {
     _placeController = TextEditingController(
         text: widget.updateAddUserRequest?.birthPlace?.placeName);
-    updateAddUserRequest.birthDetails = BirthDetails();
-    updateAddUserRequest.birthPlace = BirthPlace();
-    updateAddUserRequest.birthPlace?.placeId =
-        widget.updateAddUserRequest?.birthPlace?.placeId;
-    updateAddUserRequest.birthPlace?.placeName =
-        widget.updateAddUserRequest?.birthPlace?.placeName;
+    updateAddUserRequest = UpdateAddUserRequest.fromJson(
+        widget.updateAddUserRequest?.toJson() ?? {});
+
+    if (widget.updateAddUserRequest?.birthDetails == null) {
+      updateAddUserRequest.birthDetails = BirthDetails();
+    }
+    if (widget.updateAddUserRequest?.birthPlace == null) {
+      updateAddUserRequest.birthPlace = BirthPlace();
+    }
+
+    // updateAddUserRequest.birthPlace?.placeId =
+    //     widget.updateAddUserRequest?.birthPlace?.placeId;
+    // updateAddUserRequest.birthPlace?.placeName =
+    //     widget.updateAddUserRequest?.birthPlace?.placeName;
     super.initState();
   }
 
@@ -65,7 +73,7 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FamilyProfileBloc()..add(const GetAllProfile()),
+      create: (context) => FamilyProfileBloc(),
       child: BlocConsumer<FamilyProfileBloc, FamilyProfileState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -102,7 +110,10 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                           Expanded(
                             child: CustomTextFormField(
                               topLabel: "First Name",
-                              initialValue: updateAddUserRequest.fullName,
+                              initialValue:
+                                  widget.updateAddUserRequest?.firstName,
+                              key: Key(
+                                  widget.updateAddUserRequest?.firstName ?? ""),
                               onChange: (val) {
                                 updateAddUserRequest.firstName = val;
                               },
@@ -112,7 +123,10 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                           Expanded(
                             child: CustomTextFormField(
                               topLabel: "Last Name",
-                              initialValue: updateAddUserRequest.lastName,
+                              key: Key(
+                                  widget.updateAddUserRequest?.lastName ?? ""),
+                              initialValue:
+                                  widget.updateAddUserRequest?.lastName,
                               onChange: (val) {
                                 updateAddUserRequest.lastName = val;
                               },
@@ -136,6 +150,16 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                               maxLength: 2,
                               textInputType: TextInputType.number,
                               hintText: "Ex 23",
+                              key: Key(
+                                widget.updateAddUserRequest?.birthDetails
+                                        ?.dobDay
+                                        ?.toString() ??
+                                    "dd",
+                              ),
+                              initialValue: widget.updateAddUserRequest
+                                      ?.birthDetails?.dobDay
+                                      ?.toString() ??
+                                  "",
                               onChange: (val) {
                                 updateAddUserRequest.birthDetails?.dobDay =
                                     int.tryParse(val);
@@ -146,6 +170,16 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                           Expanded(
                             child: CustomTextFormField(
                               maxLength: 2,
+                              initialValue: widget.updateAddUserRequest
+                                      ?.birthDetails?.dobMonth
+                                      ?.toString() ??
+                                  "",
+                              key: Key(
+                                widget.updateAddUserRequest?.birthDetails
+                                        ?.dobDay
+                                        ?.toString() ??
+                                    "MM",
+                              ),
                               textInputType: TextInputType.number,
                               hintText: "Ex 12",
                               onChange: (val) {
@@ -157,7 +191,17 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                           UiHelper.w2(),
                           Expanded(
                             child: CustomTextFormField(
+                              key: Key(
+                                widget.updateAddUserRequest?.birthDetails
+                                        ?.dobDay
+                                        ?.toString() ??
+                                    "yy",
+                              ),
                               hintText: "Ex 2020",
+                              initialValue: widget.updateAddUserRequest
+                                      ?.birthDetails?.dobYear
+                                      ?.toString() ??
+                                  "",
                               maxLength: 4,
                               textInputType: TextInputType.number,
                               onChange: (val) {
@@ -182,6 +226,16 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                         children: [
                           Expanded(
                             child: CustomTextFormField(
+                              initialValue: widget.updateAddUserRequest
+                                      ?.birthDetails?.tobHour
+                                      ?.toString() ??
+                                  "",
+                              key: Key(
+                                widget.updateAddUserRequest?.birthDetails
+                                        ?.tobHour
+                                        ?.toString() ??
+                                    "",
+                              ),
                               maxLength: 2,
                               textInputType: TextInputType.number,
                               onChange: (val) {
@@ -195,6 +249,16 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                             child: CustomTextFormField(
                               maxLength: 2,
                               textInputType: TextInputType.number,
+                              initialValue: widget.updateAddUserRequest
+                                      ?.birthDetails?.tobMin
+                                      ?.toString() ??
+                                  "",
+                              key: Key(
+                                widget.updateAddUserRequest?.birthDetails
+                                        ?.tobMin
+                                        ?.toString() ??
+                                    "yy",
+                              ),
                               onChange: (val) {
                                 updateAddUserRequest.birthDetails?.tobMin =
                                     int.tryParse(val);
@@ -205,6 +269,15 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                           Expanded(
                             child: Center(
                               child: AmPmSelector(
+                                initalValueIsAm: (updateAddUserRequest
+                                            .birthDetails?.meridiem ==
+                                        "AM"
+                                    ? true
+                                    : false),
+                                key: Key(updateAddUserRequest
+                                        .birthDetails?.meridiem
+                                        ?.toString() ??
+                                    ""),
                                 isAm: (p0) {
                                   updateAddUserRequest.birthDetails?.meridiem =
                                       p0 ? "AM" : "PM";
@@ -256,6 +329,8 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                                 ),
                                 UiHelper.h1(),
                                 CustomDropDownMenu(
+                                  intialValue:
+                                      widget.updateAddUserRequest?.gender,
                                   getSelected: (p0) {
                                     updateAddUserRequest.gender = p0;
                                   },
@@ -278,6 +353,8 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                                 ),
                                 UiHelper.h1(),
                                 CustomDropDownMenu(
+                                  // intialValue:
+                                  //     widget.updateAddUserRequest?.relation,
                                   getSelected: (p0) {
                                     if (p0 == "Brother") {
                                       updateAddUserRequest.relationId = 3;
@@ -305,15 +382,22 @@ class _UpdateEditProfileScreenState extends State<UpdateEditProfileScreen> {
                       UiHelper.h4(),
                       CustomTextButton(
                         onTap: () {
-                          if (false) {
-                          } else {
+                          if (widget.updateAddUserRequest == null) {
                             BlocProvider.of<FamilyProfileBloc>(context).add(
                               CreateProfile(
                                   updateAddUserRequest: updateAddUserRequest),
                             );
+                          } else {
+                            BlocProvider.of<FamilyProfileBloc>(context).add(
+                              UpdateProfile(
+                                  uuid: widget.updateAddUserRequest?.uuid ?? "",
+                                  updateAddUserRequest: updateAddUserRequest),
+                            );
                           }
                         },
-                        text: "Save Changes",
+                        text: widget.updateAddUserRequest == null
+                            ? "Create Profile"
+                            : "Save Changes",
                       )
                     ],
                   ),
@@ -332,7 +416,7 @@ class AmPmSelector extends StatefulWidget {
   final Function(bool) isAm;
 
   const AmPmSelector(
-      {Key? key, this.initalValueIsAm = true, required this.isAm})
+      {Key? key, required this.initalValueIsAm, required this.isAm})
       : super(key: key);
 
   @override
@@ -346,14 +430,18 @@ class _AmPmSelectorState extends State<AmPmSelector> {
     fontSize: 14.sp,
   );
 
+  @override
+  void initState() {
+    isAm = widget.initalValueIsAm;
+    super.initState();
+  }
+
   final double width = 96.w;
   final double height = 48.w;
 
   final int duration = 350;
   @override
   Widget build(BuildContext context) {
-    if (isAm != null) {}
-
     return GestureDetector(
       onTap: () {
         isAm = isAm ? false : true;

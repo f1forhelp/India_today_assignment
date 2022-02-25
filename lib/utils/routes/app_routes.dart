@@ -6,7 +6,7 @@ import 'package:india_today_demo/presentation/pages/update_edit_profile_screen.d
 
 class AppRoutes {
   static String getInitialRoute() {
-    return UpdateEditProfileScreen.id;
+    return FrindFamilyProfileScreen.id;
   }
 
   static Route<dynamic>? generateRoutes(RouteSettings? routeSettings) {
@@ -26,7 +26,9 @@ class AppRoutes {
         if (args != null) {
           try {
             uuid = args as UpdateAddUserRequest;
-          } catch (e) {}
+          } catch (e) {
+            print(e);
+          }
         }
         return MaterialPageRoute(
           builder: (context) =>
