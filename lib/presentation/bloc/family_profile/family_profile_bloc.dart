@@ -24,6 +24,15 @@ class FamilyProfileBloc extends Bloc<FamilyProfileEvent, FamilyProfileState> {
     on<GetAllProfile>((event, emit) async {
       await _getAllFamilyProfile(emit);
     });
+    on<UpdateProfile>((event, emit) async {
+      await _updateProfile(event, emit);
+    });
+    on<CreateProfile>((event, emit) async {
+      await _createProfile(event, emit);
+    });
+    on<GetLocationDetail>((event, emit) async {
+      await _getLocationDetail(event, emit);
+    });
     on<DeleteProfile>(
       (event, emit) async {
         await _deleteProfile(event, emit);
@@ -92,17 +101,17 @@ class FamilyProfileBloc extends Bloc<FamilyProfileEvent, FamilyProfileState> {
   }
 
   _getLocationDetail(
-      CreateProfile event, Emitter<FamilyProfileState> emit) async {
+      GetLocationDetail event, Emitter<FamilyProfileState> emit) async {
     BotToast.showLoading();
     state.copyWith(profileCreateState: const ResultState.loading());
-    var res = await RelativeProfileRepository.addProfile(
-        updateAddUserRequest: event.updateAddUserRequest);
+    var res = await RelativeProfileRepository.getLocationData(
+        location: event.locationName);
     res.when(success: (v) {
       BotToast.showText(text: v.message ?? "");
-      emit(state.copyWith(profileCreateState: ResultState.data(data: v)));
+      emit(state.copyWith(fetchLocationState: ResultState.data(data: v)));
     }, failure: (e) {
       BotToast.showText(text: e.toString());
-      emit(state.copyWith(profileCreateState: ResultState.error(error: e)));
+      emit(state.copyWith(fetchLocationState: ResultState.error(error: e)));
     });
   }
 }
