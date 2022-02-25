@@ -1,0 +1,29 @@
+{
+    "httpStatus": "OK",
+    "httpStatusCode": 200,
+    "success": true,
+    "message": "Places suggestions fetched successfully.",
+    "apiName": "Get places list.",
+    "data": [
+        {
+            "placeName": "Delhi, India",
+            "placeId": "ChIJL_P_CXMEDTkRw0ZdG-0GVvw"
+        },
+        {
+            "placeName": "Delhi, NY, USA",
+            "placeId": "ChIJVS4Od-R43IkRReeLGEBFcv8"
+        },
+        {
+            "placeName": "Delhi, ON, Canada",
+            "placeId": "ChIJf38LINc1LIgRjQCjD2EW78o"
+        },
+        {
+            "placeName": "Delhi, CA, USA",
+            "placeId": "ChIJeWtf7IQOkYARqIGKfhVoSaU"
+        },
+        {
+            "placeName": "Delhi, LA, USA",
+            "placeId": "ChIJcZQ-y7_dLoYROEhqDgVWSU0"
+        }
+    ]
+}

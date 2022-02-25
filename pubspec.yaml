@@ -27,6 +27,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_typeahead: ^3.2.4
+  json_annotation: 
+  get_it: ^7.2.0
+  bot_toast: ^4.0.1
+  dio: ^4.0.4
+  equatable:
+  flutter_bloc: ^8.0.1
   google_fonts: ^2.3.1
   flutter_screenutil: ^5.3.1
   flutter:
@@ -38,6 +45,10 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  json_serializable: ^6.1.4
+  freezed_annotation: ^1.1.0
+  freezed: ^1.1.1
+  build_runner:
   flutter_test:
     sdk: flutter
 
