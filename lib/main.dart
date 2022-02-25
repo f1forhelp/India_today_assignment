@@ -42,21 +42,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          "This is cat",
-          style: TextStyle(
-            fontSize: 40,
-          ),
-        ),
-      ),
-    );
-  }
-}
