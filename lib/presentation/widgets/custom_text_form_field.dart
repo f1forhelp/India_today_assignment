@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:india_today_demo/utils/constants/k_text_style.dart';
 
 class CustomTextFormField extends StatefulWidget {
-  final TextEditingController textEditingController;
+  final TextEditingController? textEditingController;
   final int? maxLength;
   final int? maxLines;
   final String? topLabel;
   final String? hintText;
+  final String? initialValue;
+  final TextInputType? textInputType;
+  final Function(String)? onChange;
   const CustomTextFormField(
       {Key? key,
-      required this.textEditingController,
+      this.textEditingController,
       this.maxLength,
       this.maxLines,
       this.topLabel,
-      this.hintText})
+      this.hintText,
+      this.onChange,
+      this.initialValue,
+      this.textInputType})
       : super(key: key);
 
   @override
@@ -33,10 +40,14 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 padding: EdgeInsets.only(bottom: 8),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(widget.topLabel ?? ""),
+                  child: Text(widget.topLabel ?? "",
+                      style: KTextStyle.textFiledTopHint),
                 ),
               ),
         TextFormField(
+          style: KTextStyle.textFieldStyle,
+          keyboardType: widget.textInputType,
+          initialValue: widget.initialValue,
           decoration: InputDecoration(
             hintText: widget.hintText,
             border: OutlineInputBorder(
@@ -46,10 +57,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           maxLines: widget.maxLines,
           maxLength: widget.maxLength,
           controller: widget.textEditingController,
-          onChanged: (val) {
-            totalLetters = val.length;
-            setState(() {});
-          },
+          onChanged: widget.onChange,
         ),
       ],
     );

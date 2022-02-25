@@ -63,7 +63,7 @@ class RelativeProfileRepository {
   static Future<ApiResult<GetLocationDetailResponse>> getLocationData(
       {required String location}) async {
     try {
-      var res = await _networkUtil.get(KUrl.deleteProfile + location);
+      var res = await _networkUtil.get(KUrl.location + location);
       var data = GetLocationDetailResponse.fromJson(res.data);
 
       return ApiResult.success(data: data);

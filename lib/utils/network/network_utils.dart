@@ -191,7 +191,7 @@ class _DioClinet {
           requestHeader: false,
           responseHeader: false,
           request: false,
-          requestBody: false));
+          requestBody: true));
     }
   }
 

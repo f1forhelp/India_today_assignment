@@ -84,6 +84,7 @@ class FamilyProfileBloc extends Bloc<FamilyProfileEvent, FamilyProfileState> {
       BotToast.showText(text: e.toString());
       emit(state.copyWith(profileUpdateState: ResultState.error(error: e)));
     });
+    BotToast.closeAllLoading();
   }
 
   _createProfile(CreateProfile event, Emitter<FamilyProfileState> emit) async {
@@ -98,6 +99,7 @@ class FamilyProfileBloc extends Bloc<FamilyProfileEvent, FamilyProfileState> {
       BotToast.showText(text: e.toString());
       emit(state.copyWith(profileCreateState: ResultState.error(error: e)));
     });
+    BotToast.closeAllLoading();
   }
 
   _getLocationDetail(
@@ -113,5 +115,6 @@ class FamilyProfileBloc extends Bloc<FamilyProfileEvent, FamilyProfileState> {
       BotToast.showText(text: e.toString());
       emit(state.copyWith(fetchLocationState: ResultState.error(error: e)));
     });
+    BotToast.closeAllLoading();
   }
 }

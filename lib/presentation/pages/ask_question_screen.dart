@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:india_today_demo/presentation/bloc/ask_question/askquestion_bloc.dart';
+import 'package:india_today_demo/presentation/pages/friend_family_profile_screen.dart';
 import 'package:india_today_demo/presentation/widgets/custom_appbar.dart';
 import 'package:india_today_demo/utils/app_init.dart';
 import 'package:india_today_demo/utils/constants/k_asset.dart';
@@ -199,7 +200,9 @@ class _AppBarContent extends StatelessWidget {
             fit: BoxFit.fitHeight,
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, FrindFamilyProfileScreen.id);
+            },
             child: Padding(
               padding: const EdgeInsets.all(6.0),
               child: Image.asset(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:india_today_demo/presentation/pages/update_edit_profile_screen.dart';
 import 'package:india_today_demo/presentation/widgets/custom_appbar.dart';
 import 'package:india_today_demo/presentation/widgets/custom_text_button.dart';
 import 'package:india_today_demo/utils/constants/k_color.dart';
@@ -124,7 +125,12 @@ class _FrindFamilyProfileScreenState extends State<FrindFamilyProfileScreen> {
                 ),
                 Align(
                   alignment: Alignment(0, 0.8),
-                  child: CustomTextButton(text: "Create Profile"),
+                  child: CustomTextButton(
+                      text: "Create Profile",
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, UpdateEditProfileScreen.id);
+                      }),
                 ),
               ],
             )),

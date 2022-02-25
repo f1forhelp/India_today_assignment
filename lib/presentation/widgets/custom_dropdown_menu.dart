@@ -22,7 +22,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
   String? selectedValue;
 
   final TextStyle _textStyle = TextStyle(
-    fontSize: 18.sp,
+    fontSize: 14.sp,
   );
 
   callGetValInit() {

@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_typeahead: ^3.2.4
   json_annotation: 
   get_it: ^7.2.0
   bot_toast: ^4.0.1

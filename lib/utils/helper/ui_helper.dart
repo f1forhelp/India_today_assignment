@@ -23,4 +23,19 @@ class UiHelper {
   static Widget h3() => SizedBox(
         height: 14.h,
       );
+  static Widget h4() => SizedBox(
+        height: 20.h,
+      );
+  static Widget w1() => SizedBox(
+        width: 6.w,
+      );
+  static Widget w2() => SizedBox(
+        width: 10.w,
+      );
+  static Widget w3() => SizedBox(
+        width: 14.w,
+      );
+  static Widget w4() => SizedBox(
+        width: 20.w,
+      );
 }
