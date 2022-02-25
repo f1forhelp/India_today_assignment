@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:india_today_demo/utils/routes/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
                   .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
             ),
           ),
-          home: HomeScreen(),
+          initialRoute: AppRoutes.getInitialRoute(),
         ),
       ),
     );
