@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: () => GestureDetector(
+      builder: (context) => GestureDetector(
         onTap: () {
           var currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus &&
